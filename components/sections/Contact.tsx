@@ -75,7 +75,7 @@ export default function Contact() {
   return (
     <section id="contact" className="py-24 px-4 bg-zinc-950/20 light:bg-zinc-50/40 relative z-10 border-t border-zinc-900/50 light:border-zinc-200/50">
       <div className="max-w-6xl mx-auto">
-        
+
         {/* Header */}
         <div className="mb-16 text-center">
           <h2 className="font-display font-bold text-3xl md:text-5xl text-white light:text-zinc-950">
@@ -102,24 +102,24 @@ export default function Contact() {
             {/* Direct Coordinates */}
             <div className="space-y-4 text-xs font-semibold">
               <a
-                href="mailto:developer@example.com"
+                href="mailto:ranjithbharathwaj@gmail.com"
                 className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 hover:border-accent/30 transition-all text-muted hover:text-white light:hover:text-zinc-950"
               >
                 <Mail className="w-5 h-5 text-accent shrink-0" />
-                <span>developer@example.com</span>
+                <span>ranjithbharathwaj@gmail.com</span>
               </a>
 
               <a
-                href="tel:+15550199"
+                href="tel:+91 7305893249"
                 className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 hover:border-accent/30 transition-all text-muted hover:text-white light:hover:text-zinc-950"
               >
                 <Phone className="w-5 h-5 text-primary shrink-0" />
-                <span>+1 (555) 0199</span>
+                <span>7305893249</span>
               </a>
 
               <div className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 text-muted">
                 <MapPin className="w-5 h-5 text-accent shrink-0" />
-                <span>Seattle, Washington, USA (UTC-8)</span>
+                <span>Chennai, Tamil Nadu, </span>
               </div>
             </div>
           </div>
@@ -133,11 +133,10 @@ export default function Contact() {
             {/* Success/Error Notifications */}
             {statusMessage && (
               <div
-                className={`flex gap-3 p-4 rounded-lg text-xs font-semibold mb-6 border ${
-                  formState === 'success'
-                    ? 'bg-emerald-950/20 border-emerald-900 text-emerald-400'
-                    : 'bg-red-950/20 border-red-900 text-red-400'
-                }`}
+                className={`flex gap-3 p-4 rounded-lg text-xs font-semibold mb-6 border ${formState === 'success'
+                  ? 'bg-emerald-950/20 border-emerald-900 text-emerald-400'
+                  : 'bg-red-950/20 border-red-900 text-red-400'
+                  }`}
               >
                 {formState === 'success' ? (
                   <CheckCircle className="w-5 h-5 shrink-0" />
