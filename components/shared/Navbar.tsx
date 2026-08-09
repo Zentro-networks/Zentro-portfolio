@@ -75,7 +75,7 @@ export default function Navbar() {
   const handleNavClick = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
     setIsOpen(false);
-    
+
     if (pathname !== '/') {
       router.push(`/#${id}`);
       return;
@@ -94,11 +94,10 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'py-4 bg-[#09090b]/75 light:bg-[#ffffff]/75 backdrop-blur-md border-b border-white/5 light:border-black/5 shadow-lg'
-          : 'py-6 bg-transparent'
-      }`}
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled
+        ? 'py-4 bg-[#09090b]/75 light:bg-[#ffffff]/75 backdrop-blur-md border-b border-white/5 light:border-black/5 shadow-lg'
+        : 'py-6 bg-transparent'
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
         {/* Logo */}
@@ -108,7 +107,7 @@ export default function Navbar() {
         >
           <span className="w-2.5 h-2.5 rounded-full bg-accent animate-ping absolute" />
           <span className="w-2.5 h-2.5 rounded-full bg-accent relative" />
-          <span>DEV.PORTFOLIO</span>
+          <span>ZENTRONETWORKS</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -121,11 +120,10 @@ export default function Navbar() {
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={(e) => handleNavClick(e, item.id)}
-                  className={`relative px-4 py-1.5 rounded-full text-xs transition-all font-medium ${
-                    isActive
-                      ? 'text-white light:text-zinc-950 bg-white/10 light:bg-black/10'
-                      : 'text-muted hover:text-white light:hover:text-zinc-950'
-                  }`}
+                  className={`relative px-4 py-1.5 rounded-full text-xs transition-all font-medium ${isActive
+                    ? 'text-white light:text-zinc-950 bg-white/10 light:bg-black/10'
+                    : 'text-muted hover:text-white light:hover:text-zinc-950'
+                    }`}
                 >
                   {item.label}
                 </a>
@@ -177,11 +175,10 @@ export default function Navbar() {
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={(e) => handleNavClick(e, item.id)}
-                  className={`px-4 py-2.5 rounded-lg text-sm transition-all font-semibold ${
-                    isActive
-                      ? 'text-accent bg-zinc-900 light:bg-zinc-100'
-                      : 'text-muted hover:text-white light:hover:text-zinc-950'
-                  }`}
+                  className={`px-4 py-2.5 rounded-lg text-sm transition-all font-semibold ${isActive
+                    ? 'text-accent bg-zinc-900 light:bg-zinc-100'
+                    : 'text-muted hover:text-white light:hover:text-zinc-950'
+                    }`}
                 >
                   {item.label}
                 </a>
