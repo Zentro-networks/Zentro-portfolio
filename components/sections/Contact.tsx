@@ -102,7 +102,7 @@ export default function Contact() {
             {/* Direct Coordinates */}
             <div className="space-y-4 text-xs font-semibold">
               <a
-                href="mailto:ranjithbharathwaj@gmail.com"
+                href="https://mail.google.com/mail/u/2/#inbox"
                 className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 hover:border-accent/30 transition-all text-muted hover:text-white light:hover:text-zinc-950"
               >
                 <Mail className="w-5 h-5 text-accent shrink-0" />
@@ -119,7 +119,7 @@ export default function Contact() {
 
               <div className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 text-muted">
                 <MapPin className="w-5 h-5 text-accent shrink-0" />
-                <span>Chennai, Tamil Nadu, </span>
+                <span>Chennai, Tamil Nadu, India</span>
               </div>
             </div>
           </div>
