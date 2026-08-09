@@ -8,7 +8,7 @@ import { Sun, Moon, Menu, X, FileText } from 'lucide-react';
 const NAV_ITEMS = [
   { label: 'About', id: 'about' },
   { label: 'Services', id: 'services' },
-  { label: 'Testimonials', id: 'testimonials' },
+  { label: 'Reviews', id: 'testimonials' },
   { label: 'Contact', id: 'contact' },
 ];
 
