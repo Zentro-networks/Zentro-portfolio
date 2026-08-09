@@ -102,11 +102,11 @@ export default function Contact() {
             {/* Direct Coordinates */}
             <div className="space-y-4 text-xs font-semibold">
               <a
-                href="https://mail.google.com/mail/u/2/#inbox"
+                href="https://mail.google.com/mail/u/7/#inbox"
                 className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 hover:border-accent/30 transition-all text-muted hover:text-white light:hover:text-zinc-950"
               >
                 <Mail className="w-5 h-5 text-accent shrink-0" />
-                <span>ranjithbharathwaj@gmail.com</span>
+                <span>zentronetworks@gmail.com</span>
               </a>
 
               <a
@@ -114,7 +114,7 @@ export default function Contact() {
                 className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 hover:border-accent/30 transition-all text-muted hover:text-white light:hover:text-zinc-950"
               >
                 <Phone className="w-5 h-5 text-primary shrink-0" />
-                <span>7305893249</span>
+                <span>+91 9384967955</span>
               </a>
 
               <div className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 text-muted">
@@ -226,10 +226,10 @@ export default function Contact() {
                     <option value="" disabled className="text-zinc-500">
                       Select budget range...
                     </option>
-                    <option value="starter">$3,500 - $6,000</option>
-                    <option value="mid">$6,000 - $12,000</option>
-                    <option value="high">$12,000 - $25,000</option>
-                    <option value="enterprise">$25,000+</option>
+                    <option value="starter">₹3,500 - ₹6,000</option>
+                    <option value="mid">₹6,000 - ₹12,000</option>
+                    <option value="high">₹12,000 - ₹25,000</option>
+                    <option value="enterprise">₹25,000+</option>
                   </select>
                   {errors.budgetRange && <p className="text-red-400 mt-1 font-semibold">{errors.budgetRange.message}</p>}
                 </div>
