@@ -68,7 +68,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.15 }}
           className="font-display font-bold text-5xl md:text-8xl tracking-tight text-white light:text-zinc-950 max-w-4xl"
         >
-          Hi, I&apos;m{' '}
+          
           <span className="bg-gradient-to-r from-primary via-blue-500 to-accent bg-clip-text text-transparent">
             Zentro Networks
           </span>
