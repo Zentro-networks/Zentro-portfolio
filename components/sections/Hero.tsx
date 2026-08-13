@@ -73,7 +73,7 @@ export default function Hero() {
           </span>
         </motion.h1>
 
-        {/* Rotating Role typing animation */}
+        {/* Rotating Role typing animation 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -85,7 +85,7 @@ export default function Hero() {
             {displayedText}
           </span>
         </motion.div>
-
+*/}
         {/* Brief value proposition */}
         <motion.p
           initial={{ opacity: 0, y: 15 }}
