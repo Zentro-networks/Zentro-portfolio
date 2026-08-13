@@ -32,7 +32,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'Premium Developer Portfolio | Senior Full-Stack & AI Engineer',
+    default: 'Zentro Networks',
     template: '%s | Senior Full-Stack & AI Engineer',
   },
   description: 'Agency-grade portfolio of a senior developer specializing in Next.js, high-throughput APIs, database optimization, and AI RAG systems.',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: 'Premium Developer Portfolio | Senior Full-Stack & AI Engineer',
+    title: 'Zentro Networks',
     description: 'Agency-grade portfolio of a senior developer specializing in Next.js, high-throughput APIs, database optimization, and AI RAG systems.',
     url: 'https://portfolio-agency.example.com',
     siteName: 'Developer Portfolio',
