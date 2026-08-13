@@ -1,4 +1,4 @@
-'use client';
+{/*'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
@@ -51,7 +51,7 @@ export default function About() {
     <section id="about" className="py-24 px-4 bg-zinc-950/20 light:bg-zinc-50/40 relative z-10 border-t border-zinc-900/50 light:border-zinc-200/50">
       <div className="max-w-6xl mx-auto">
         
-        {/* Section Header */}
+        {/* Section Header 
         <div ref={titleRef} className="mb-16 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 15 }}
@@ -69,9 +69,9 @@ export default function About() {
           />
         </div>
 
-        {/* Narrative & Counters */}
+        {/* Narrative & Counters 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Narrative */}
+          {/* Narrative 
           <div className="lg:col-span-7 space-y-6 text-muted text-sm md:text-base leading-relaxed">
             <h3 className="font-display font-bold text-xl md:text-2xl text-white light:text-zinc-950 mb-4">
               I build software that resolves business bottlenecks.
@@ -83,7 +83,7 @@ export default function About() {
               Whether transitioning server clusters to containerized Docker environments, creating real-time sync databases for supermarkets, or engineering layout-aware PDF parsers to fuel custom AI retrieval engines, I specialize in resolving high-concurrency and spatial computation limits.
             </p>
             
-            {/* Counter Grid */}
+            {/* Counter Grid 
             <div className="grid grid-cols-2 gap-6 pt-6">
               <div className="p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-black/5 flex items-center gap-4">
                 <Briefcase className="w-8 h-8 text-primary shrink-0" />
@@ -119,7 +119,7 @@ export default function About() {
             </div>
           </div>
 
-          {/* Quick Experience/Education Timeline */}
+          {/* Quick Experience/Education Timeline 
           <div className="lg:col-span-5 space-y-6">
             <h4 className="font-display font-bold text-lg text-white light:text-zinc-950 mb-4 border-b border-zinc-900 light:border-zinc-200 pb-2">
               Career Highlights
@@ -128,7 +128,7 @@ export default function About() {
             <div className="relative pl-6 border-l border-zinc-800 light:border-zinc-200 space-y-8">
               {timelineItems.map((item) => (
                 <div key={item.id} className="relative">
-                  {/* Dot */}
+                  {/* Dot 
                   <span className="absolute -left-[30px] top-1.5 w-4 h-4 rounded-full bg-[#09090b] light:bg-[#ffffff] border-2 border-primary flex items-center justify-center">
                     <span className="w-1.5 h-1.5 rounded-full bg-accent" />
                   </span>
@@ -155,3 +155,4 @@ export default function About() {
     </section>
   );
 }
+*/}
