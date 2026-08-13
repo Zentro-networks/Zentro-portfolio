@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Premium Developer Portfolio | Senior Full-Stack & AI Engineer',
+    title: 'Zentro Networks',
     description: 'Agency-grade portfolio of a senior developer specializing in Next.js, high-throughput APIs, database optimization, and AI RAG systems.',
     images: ['/og-image.webp'],
   },
