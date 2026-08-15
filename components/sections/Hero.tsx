@@ -48,6 +48,7 @@ export default function Hero() {
     <section
       id="hero"
       className="relative min-h-screen flex items-center justify-center pt-20 px-4 overflow-hidden"
+      style={{ paddingLeft: 'clamp(1rem, 4vw, 2rem)', paddingRight: 'clamp(1rem, 4vw, 2rem)' }}
     >
       <div className="max-w-5xl mx-auto text-center z-10 flex flex-col items-center">
         {/* Sub-header badge */}
@@ -66,9 +67,10 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="font-display font-bold text-5xl md:text-8xl tracking-tight text-white light:text-zinc-950 max-w-4xl"
+          className="font-display font-bold tracking-tight text-white light:text-zinc-950 max-w-4xl w-full"
+          style={{ fontSize: 'clamp(2.4rem, 7vw, 5.5rem)', lineHeight: 1.1 }}
         >
-          <span className="bg-gradient-to-r from-primary via-blue-500 to-accent bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-primary via-teal-400 to-accent bg-clip-text text-transparent">
             Zentro Networks
           </span>
         </motion.h1>
@@ -91,7 +93,8 @@ export default function Hero() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.55 }}
-          className="mt-6 text-sm md:text-base text-muted max-w-xl leading-relaxed font-medium"
+          className="mt-6 text-muted max-w-xl leading-relaxed font-medium px-2 sm:px-0"
+          style={{ fontSize: 'clamp(0.8rem, 1.8vw, 1rem)' }}
         >
           Building agency-grade web apps, high-throughput APIs, and vector-backed AI solutions that turn technical complexity into business revenue.
         </motion.p>
@@ -105,7 +108,7 @@ export default function Hero() {
         >
           <button
             onClick={() => handleScrollTo('services')}
-            className="px-8 py-3.5 bg-white light:bg-zinc-900 text-[#09090b] light:text-white rounded-full font-bold text-xs hover:bg-[#00f5d4] hover:text-[#09090b] light:hover:bg-[#5146e5] light:hover:text-white transition-all shadow-xl shadow-white/5 cursor-pointer flex items-center justify-center gap-2"
+            className="px-6 py-3.5 bg-white light:bg-zinc-900 text-[#071415] light:text-white rounded-full font-bold text-xs hover:bg-accent hover:text-[#071415] light:hover:bg-primary light:hover:text-white transition-all shadow-xl shadow-white/5 cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
           >
             <Code2 className="w-4 h-4" />
             View Services
@@ -113,7 +116,7 @@ export default function Hero() {
           
           <button
             onClick={() => handleScrollTo('contact')}
-            className="px-8 py-3.5 bg-primary hover:bg-primary/95 text-white rounded-full font-bold text-xs shadow-lg hover:shadow-primary/20 transition-all cursor-pointer flex items-center justify-center gap-2"
+            className="px-6 py-3.5 bg-primary hover:bg-primary/90 text-white rounded-full font-bold text-xs shadow-lg hover:shadow-primary/20 transition-all cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
           >
             <Send className="w-4 h-4" />
             Hire Me
@@ -122,7 +125,7 @@ export default function Hero() {
           <a
             href="/resume.pdf"
             download
-            className="px-8 py-3.5 border border-white/10 light:border-zinc-300 bg-zinc-950/40 hover:bg-zinc-900 light:hover:bg-zinc-100 text-white light:text-zinc-950 rounded-full font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="px-6 py-3.5 border border-white/10 light:border-zinc-300 bg-zinc-950/40 hover:bg-zinc-900 light:hover:bg-zinc-100 text-white light:text-zinc-950 rounded-full font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
           >
             Resume
           </a>

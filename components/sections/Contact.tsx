@@ -73,12 +73,22 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 px-4 bg-zinc-950/20 light:bg-zinc-50/40 relative z-10 border-t border-zinc-900/50 light:border-zinc-200/50">
+    <section id="contact" className="relative z-10 border-t border-zinc-900/50 light:border-zinc-200/50 overflow-hidden"
+      style={{
+        paddingTop: 'clamp(3rem, 8vw, 6rem)',
+        paddingBottom: 'clamp(3rem, 8vw, 6rem)',
+        paddingLeft: 'clamp(1rem, 4vw, 2rem)',
+        paddingRight: 'clamp(1rem, 4vw, 2rem)',
+      }}
+    >
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
-        <div className="mb-16 text-center">
-          <h2 className="font-display font-bold text-3xl md:text-5xl text-white light:text-zinc-950">
+        <div className="mb-10 md:mb-16 text-center">
+          <h2
+            className="font-display font-bold text-white light:text-zinc-950"
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 3.25rem)' }}
+          >
             Initialize Proposal
           </h2>
           <p className="text-xs text-muted mt-2 max-w-md mx-auto">
@@ -254,7 +264,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={formState === 'loading'}
-                className="w-full py-4 bg-accent hover:bg-accent/90 disabled:bg-zinc-800 text-[#09090b] disabled:text-muted rounded-lg font-bold transition-all cursor-pointer flex items-center justify-center gap-2 text-xs"
+                className="w-full py-3.5 bg-accent hover:bg-accent/90 disabled:bg-zinc-800 text-[#071415] disabled:text-muted rounded-lg font-bold transition-all cursor-pointer flex items-center justify-center gap-2 text-xs min-h-[48px]"
               >
                 {formState === 'loading' ? (
                   <>

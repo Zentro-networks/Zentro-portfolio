@@ -2,159 +2,277 @@
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
-import { Points as ThreePoints } from 'three';
 
-// Inside Canvas, animate particles
-function ParticleField({ count, isReduced, theme }: { count: number; isReduced: boolean; theme: 'dark' | 'light' }) {
-  const pointsRef = useRef<ThreePoints>(null);
-  
-  // Track mouse coordinates
+// ─── Network Graph: Nodes + Connecting Lines ───────────────────────────────
+function NetworkGraph({
+  nodeCount,
+  isReduced,
+  theme,
+}: {
+  nodeCount: number;
+  isReduced: boolean;
+  theme: 'dark' | 'light';
+}) {
+  const groupRef = useRef<THREE.Group>(null);
   const mouse = useRef({ x: 0, y: 0 });
 
+  // Track mouse for subtle parallax
   useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
-      mouse.current.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    if (isReduced) return;
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
-
-    if (!isReduced) {
-      window.addEventListener('mousemove', handleMouseMove);
-    }
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [isReduced]);
 
-  // Generate random positions
-  const positions = useMemo(() => {
-    const pos = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+  // ── Generate node positions (spread across a wide plane, slight depth variance)
+  const nodePositions = useMemo(() => {
+    const positions: [number, number, number][] = [];
+    for (let i = 0; i < nodeCount; i++) {
+      positions.push([
+        (Math.random() - 0.5) * 14,
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 4,
+      ]);
     }
-    return pos;
-  }, [count]);
+    return positions;
+  }, [nodeCount]);
 
+  // ── Build edges between nodes closer than threshold
+  const { linePositions, lineColors } = useMemo(() => {
+    const maxDist = isReduced ? 2.8 : 2.4;
+    const posArr: number[] = [];
+    const colArr: number[] = [];
+
+    const nearColor = theme === 'dark'
+      ? new THREE.Color('#087F7B')
+      : new THREE.Color('#087F7B');
+    const farColor = new THREE.Color(0x000000);
+    farColor.set(theme === 'dark' ? '#071415' : '#F4F7F3');
+
+    for (let i = 0; i < nodePositions.length; i++) {
+      for (let j = i + 1; j < nodePositions.length; j++) {
+        const [x1, y1, z1] = nodePositions[i];
+        const [x2, y2, z2] = nodePositions[j];
+        const dist = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2);
+        if (dist < maxDist) {
+          // fade opacity based on distance
+          const alpha = 1 - dist / maxDist;
+          posArr.push(x1, y1, z1, x2, y2, z2);
+          // interpolate color by alpha for a fade-out effect
+          const lc = nearColor.clone().lerp(farColor, 1 - alpha * 0.7);
+          colArr.push(lc.r, lc.g, lc.b, alpha * 0.5, lc.r, lc.g, lc.b, alpha * 0.5);
+        }
+      }
+    }
+    return { linePositions: posArr, lineColors: colArr };
+  }, [nodePositions, isReduced, theme]);
+
+  // ── Build geometry for lines
+  const lineGeometry = useMemo(() => {
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+    geo.setAttribute('color', new THREE.Float32BufferAttribute(lineColors, 4));
+    return geo;
+  }, [linePositions, lineColors]);
+
+  // ── Build geometry for nodes (rendered as points)
+  const { pointPositions, pointColors } = useMemo(() => {
+    const posArr: number[] = [];
+    const colArr: number[] = [];
+    nodePositions.forEach(([x, y, z], i) => {
+      posArr.push(x, y, z);
+      // Alternate some nodes as lime accent nodes
+      const isAccent = i % 7 === 0;
+      const c = new THREE.Color(isAccent
+        ? (theme === 'dark' ? '#C7F36B' : '#087F7B')
+        : (theme === 'dark' ? '#087F7B' : '#0a9e99'));
+      colArr.push(c.r, c.g, c.b);
+    });
+    return { pointPositions: posArr, pointColors: colArr };
+  }, [nodePositions, theme]);
+
+  const pointGeometry = useMemo(() => {
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(pointPositions, 3));
+    geo.setAttribute('color', new THREE.Float32BufferAttribute(pointColors, 3));
+    return geo;
+  }, [pointPositions, pointColors]);
+
+  // ── Animate: slow rotation + mouse parallax
   useFrame((state) => {
-    if (!pointsRef.current) return;
-    
-    // Slow rotational drift
-    const time = state.clock.getElapsedTime();
-    pointsRef.current.rotation.y = time * 0.02;
-    pointsRef.current.rotation.x = time * 0.01;
+    if (!groupRef.current) return;
+    const t = state.clock.getElapsedTime();
+    groupRef.current.rotation.y = t * 0.012;
+    groupRef.current.rotation.x = t * 0.006;
 
-    // Subtle reaction to mouse
     if (!isReduced) {
-      const targetX = mouse.current.x * 0.15;
-      const targetY = mouse.current.y * 0.15;
-      pointsRef.current.position.x += (targetX - pointsRef.current.position.x) * 0.05;
-      pointsRef.current.position.y += (targetY - pointsRef.current.position.y) * 0.05;
+      const tx = mouse.current.x * 0.12;
+      const ty = mouse.current.y * 0.12;
+      groupRef.current.position.x += (tx - groupRef.current.position.x) * 0.04;
+      groupRef.current.position.y += (ty - groupRef.current.position.y) * 0.04;
     }
   });
 
   return (
-    <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={pointsRef} positions={positions} stride={3} frustumCulled={false}>
-        <PointMaterial
+    <group ref={groupRef}>
+      {/* Connection lines */}
+      <lineSegments geometry={lineGeometry}>
+        <lineBasicMaterial
+          vertexColors
           transparent
-          color={theme === 'light' ? '#5146e5' : '#00f5d4'}
-          size={0.025}
-          sizeAttenuation={true}
+          opacity={theme === 'dark' ? 0.55 : 0.35}
+          blending={theme === 'dark' ? THREE.AdditiveBlending : THREE.NormalBlending}
           depthWrite={false}
-          blending={theme === 'light' ? THREE.NormalBlending : THREE.AdditiveBlending}
         />
-      </Points>
+      </lineSegments>
+
+      {/* Node points */}
+      <points geometry={pointGeometry}>
+        <pointsMaterial
+          vertexColors
+          size={isReduced ? 0.045 : 0.06}
+          sizeAttenuation
+          transparent
+          opacity={theme === 'dark' ? 0.9 : 0.7}
+          blending={theme === 'dark' ? THREE.AdditiveBlending : THREE.NormalBlending}
+          depthWrite={false}
+        />
+      </points>
     </group>
   );
 }
 
+// ─── Main Export ──────────────────────────────────────────────────────────────
 export default function ThreeBackground() {
   const [mounted, setMounted] = useState(false);
   const [performanceTier, setPerformanceTier] = useState<'high' | 'low' | 'static'>('high');
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
-  // Listen to HTML class mutations to dynamically track light/dark theme toggles
   useEffect(() => {
     setMounted(true);
-    
+
     const checkTheme = () => {
-      const isLight = document.documentElement.classList.contains('light');
-      setTheme(isLight ? 'light' : 'dark');
+      setTheme(document.documentElement.classList.contains('light') ? 'light' : 'dark');
     };
-    
     checkTheme();
 
     const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-    // Detect reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // Detect low-end / mobile devices (simple heuristic)
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    ) || window.innerWidth < 768;
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+      window.innerWidth < 768;
 
-    if (prefersReducedMotion) {
-      setPerformanceTier('static');
-    } else if (isMobile) {
-      setPerformanceTier('low');
-    } else {
-      setPerformanceTier('high');
-    }
+    if (prefersReducedMotion) setPerformanceTier('static');
+    else if (isMobile) setPerformanceTier('low');
+    else setPerformanceTier('high');
 
     return () => observer.disconnect();
   }, []);
 
-  const bgColor = theme === 'light' ? '#ffffff' : '#09090b';
+  const isDark = theme === 'dark';
+  const bgColor = isDark ? '#071415' : '#F4F7F3';
 
+  // ── SSR placeholder
   if (!mounted) {
-    return <div className="absolute inset-0 bg-[#09090b] light:bg-[#ffffff]" />;
+    return <div className="fixed inset-0 -z-10 bg-[#071415] light:bg-[#F4F7F3]" />;
   }
 
-  // Under prefers-reduced-motion, render a smooth CSS gradient blob
+  // ── Static fallback (reduced motion / very low-end)
   if (performanceTier === 'static') {
     return (
-      <div className={`absolute inset-0 overflow-hidden -z-10 transition-colors duration-300 ${
-        theme === 'light' ? 'bg-[#ffffff]' : 'bg-[#09090b]'
-      }`}>
-        <div className={`absolute top-[20%] left-[20%] w-[30vw] h-[30vw] rounded-full blur-[100px] transition-colors duration-300 ${
-          theme === 'light' ? 'bg-primary/5' : 'bg-primary/10'
-        }`} />
-        <div className={`absolute bottom-[20%] right-[20%] w-[35vw] h-[35vw] rounded-full blur-[120px] transition-colors duration-300 ${
-          theme === 'light' ? 'bg-accent/3' : 'bg-accent/5'
-        }`} />
+      <div className={`fixed inset-0 -z-10 overflow-hidden ${isDark ? 'bg-[#071415]' : 'bg-[#F4F7F3]'}`}>
+        {/* Radial center glow */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: isDark
+              ? 'radial-gradient(ellipse 70% 60% at 55% 45%, rgba(8,127,123,0.22) 0%, rgba(11,41,41,0.15) 50%, transparent 80%)'
+              : 'radial-gradient(ellipse 70% 60% at 55% 45%, rgba(8,127,123,0.10) 0%, transparent 70%)',
+          }}
+        />
+        {/* Corner vignette */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 50%, rgba(4,13,13,0.7) 100%)',
+          }}
+        />
       </div>
     );
   }
 
-  const particleCount = performanceTier === 'low' ? 300 : 1200;
+  const nodeCount = performanceTier === 'low' ? 60 : 160;
 
   return (
-    <div className={`absolute inset-0 -z-10 overflow-hidden pointer-events-none transition-colors duration-300 ${
-      theme === 'light' ? 'bg-[#ffffff]' : 'bg-[#09090b]'
-    }`}>
-      {/* Background radial gradients for ambient glow */}
-      <div className={`absolute top-[10%] left-[5%] w-[40vw] h-[40vw] rounded-full blur-[120px] pointer-events-none opacity-60 transition-colors duration-300 ${
-        theme === 'light' ? 'bg-primary/5' : 'bg-primary/15'
-      }`} />
-      <div className={`absolute bottom-[10%] right-[5%] w-[45vw] h-[45vw] rounded-full blur-[150px] pointer-events-none opacity-60 transition-colors duration-300 ${
-        theme === 'light' ? 'bg-accent/3' : 'bg-accent/8'
-      }`} />
-      
+    <div className={`fixed inset-0 -z-10 overflow-hidden ${isDark ? 'bg-[#071415]' : 'bg-[#F4F7F3]'}`}>
+
+      {/* ── Layer 1: Rich center radial glow (the dominant "orb" from the reference image) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: isDark
+            ? `radial-gradient(ellipse 75% 65% at 58% 42%,
+                rgba(8,127,123,0.28) 0%,
+                rgba(8,127,123,0.10) 35%,
+                rgba(11,41,41,0.06) 60%,
+                transparent 80%)`
+            : `radial-gradient(ellipse 75% 65% at 58% 42%,
+                rgba(8,127,123,0.12) 0%,
+                rgba(8,127,123,0.04) 50%,
+                transparent 80%)`,
+        }}
+      />
+
+      {/* ── Layer 2: Secondary top-left ambient glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: isDark
+            ? 'radial-gradient(ellipse 50% 40% at 15% 20%, rgba(199,243,107,0.04) 0%, transparent 70%)'
+            : 'radial-gradient(ellipse 50% 40% at 15% 20%, rgba(8,127,123,0.04) 0%, transparent 70%)',
+        }}
+      />
+
+      {/* ── Layer 3: Edge vignette (dark fade from all corners to center — matches the reference) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: isDark
+            ? 'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(4,10,10,0.65) 100%)'
+            : 'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(230,235,230,0.5) 100%)',
+        }}
+      />
+
+      {/* ── Layer 4: Three.js network graph canvas */}
       <Canvas
-        camera={{ position: [0, 0, 4], fov: 60 }}
-        gl={{ antialias: false, powerPreference: 'high-performance' }}
+        className="absolute inset-0 w-full h-full"
+        camera={{ position: [0, 0, 5], fov: 55 }}
+        gl={{ antialias: false, powerPreference: 'high-performance', alpha: true }}
+        style={{ background: 'transparent' }}
       >
         <color attach="background" args={[bgColor]} />
-        <ambientLight intensity={theme === 'light' ? 0.8 : 0.5} />
-        <ParticleField count={particleCount} isReduced={performanceTier === 'low'} theme={theme} />
+        <NetworkGraph
+          nodeCount={nodeCount}
+          isReduced={performanceTier === 'low'}
+          theme={theme}
+        />
       </Canvas>
+
+      {/* ── Layer 5: Top fade overlay to help navbar blend */}
+      <div
+        className="absolute top-0 inset-x-0 h-32 pointer-events-none"
+        style={{
+          background: isDark
+            ? 'linear-gradient(to bottom, rgba(7,20,21,0.6) 0%, transparent 100%)'
+            : 'linear-gradient(to bottom, rgba(244,247,243,0.5) 0%, transparent 100%)',
+        }}
+      />
     </div>
   );
 }

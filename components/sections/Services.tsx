@@ -2,15 +2,12 @@
 
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Layout, BrainCircuit, Cpu, Zap, CheckCircle2 } from 'lucide-react';
+import { Layout, CheckCircle2 } from 'lucide-react';
 import { services } from '../../data/services';
 
 // Map icon strings to Lucide components
 const ICON_MAP: Record<string, React.ComponentType<any>> = {
   Layout,
-  BrainCircuit,
-  Cpu,
-  Zap,
 };
 
 export default function Services() {
@@ -26,12 +23,24 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="py-24 px-4 bg-transparent relative z-10">
+    <section
+      id="services"
+      className="relative z-10 overflow-hidden"
+      style={{
+        paddingTop: 'clamp(3rem, 8vw, 6rem)',
+        paddingBottom: 'clamp(3rem, 8vw, 6rem)',
+        paddingLeft: 'clamp(1rem, 4vw, 2rem)',
+        paddingRight: 'clamp(1rem, 4vw, 2rem)',
+      }}
+    >
       <div className="max-w-6xl mx-auto">
         
         {/* Header */}
-        <div className="mb-16 text-center">
-          <h2 className="font-display font-bold text-3xl md:text-5xl text-white light:text-zinc-950">
+        <div className="mb-12 md:mb-16 text-center">
+          <h2
+            className="font-display font-bold text-white light:text-zinc-950"
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 3.25rem)' }}
+          >
             Professional Offerings
           </h2>
           <p className="text-xs text-muted mt-2 max-w-md mx-auto">
@@ -43,10 +52,10 @@ export default function Services() {
         {/* Services Grid */}
         <div
           ref={containerRef}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          className="max-w-2xl mx-auto"
         >
           {services.map((service, idx) => {
-            const IconComponent = ICON_MAP[service.iconName] || Cpu;
+            const IconComponent = ICON_MAP[service.iconName] || Layout;
             
             return (
               <motion.div

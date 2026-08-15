@@ -30,12 +30,24 @@ export default function Testimonials() {
   const active = testimonials[index];
 
   return (
-    <section id="testimonials" className="py-24 px-4 bg-transparent relative z-10">
+    <section
+      id="testimonials"
+      className="relative z-10 overflow-hidden"
+      style={{
+        paddingTop: 'clamp(3rem, 8vw, 6rem)',
+        paddingBottom: 'clamp(3rem, 8vw, 6rem)',
+        paddingLeft: 'clamp(1rem, 4vw, 2rem)',
+        paddingRight: 'clamp(1rem, 4vw, 2rem)',
+      }}
+    >
       <div className="max-w-4xl mx-auto">
         
         {/* Header */}
-        <div className="mb-16 text-center">
-          <h2 className="font-display font-bold text-3xl md:text-5xl text-white light:text-zinc-950">
+        <div className="mb-10 md:mb-16 text-center">
+          <h2
+            className="font-display font-bold text-white light:text-zinc-950"
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 3.25rem)' }}
+          >
             Client Review
           </h2>
           <p className="text-xs text-muted mt-2">

@@ -6,8 +6,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Sun, Moon, Menu, X, FileText } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { label: 'About', id: 'about' },
+ /* { label: 'About', id: 'about' },*/
   { label: 'Services', id: 'services' },
+  { label: 'Projects', id: 'projects' },
   { label: 'Reviews', id: 'testimonials' },
   { label: 'Contact', id: 'contact' },
 ];
@@ -94,20 +95,21 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled
-        ? 'py-4 bg-[#09090b]/75 light:bg-[#ffffff]/75 backdrop-blur-md border-b border-white/5 light:border-black/5 shadow-lg'
-        : 'py-6 bg-transparent'
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 overflow-x-hidden ${scrolled
+        ? 'py-3 md:py-4 bg-[#09090b]/80 light:bg-[#ffffff]/80 backdrop-blur-md border-b border-white/5 light:border-black/5 shadow-lg'
+        : 'py-4 md:py-6 bg-transparent'
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
         {/* Logo */}
         <Link
           href="/"
-          className="font-display font-bold text-xl text-white light:text-zinc-950 flex items-center gap-1.5"
+          className="font-display font-bold text-base md:text-xl text-white light:text-zinc-950 flex items-center gap-1.5 shrink-0"
         >
           <span className="w-2.5 h-2.5 rounded-full bg-accent animate-ping absolute" />
           <span className="w-2.5 h-2.5 rounded-full bg-accent relative" />
-          <span>ZENTRONETWORKS</span>
+          <span className="hidden xs:inline sm:inline">ZENTRONETWORKS</span>
+          
         </Link>
 
         {/* Desktop Navigation */}
@@ -175,7 +177,7 @@ export default function Navbar() {
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={(e) => handleNavClick(e, item.id)}
-                  className={`px-4 py-2.5 rounded-lg text-sm transition-all font-semibold ${isActive
+                  className={`px-4 py-3 rounded-lg text-sm transition-all font-semibold min-h-[44px] flex items-center ${isActive
                     ? 'text-accent bg-zinc-900 light:bg-zinc-100'
                     : 'text-muted hover:text-white light:hover:text-zinc-950'
                     }`}

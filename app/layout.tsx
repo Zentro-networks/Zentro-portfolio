@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Space_Grotesk, Inter } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import dynamic from 'next/dynamic';
 import './globals.css';
 
@@ -10,24 +10,18 @@ import LenisProvider from '../components/shared/LenisProvider';
 
 import ThreeBackground from '../components/shared/ThreeBackground';
 
-const spaceGrotesk = Space_Grotesk({
+const montserrat = Montserrat({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-});
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-montserrat',
   weight: ['400', '500', '600', '700'],
   display: 'swap',
 });
 
 export const viewport: Viewport = {
-  themeColor: '#09090b',
+  themeColor: '#071415',
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 5,
 };
 
 export const metadata: Metadata = {
@@ -76,7 +70,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
+      className={`${montserrat.variable} h-full antialiased overflow-x-hidden`}
     >
       <head>
         {/* Anti-flash scripts for local storage themes */}
@@ -97,11 +91,11 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#09090b] light:bg-[#ffffff] text-white light:text-zinc-950 font-sans selection:bg-accent/30 selection:text-white transition-colors duration-300">
+      <body className="min-h-full flex flex-col bg-[#071415] light:bg-[#F4F7F3] text-white light:text-zinc-950 font-sans selection:bg-accent/30 selection:text-white transition-colors duration-300">
         {/* Generative Noise Overlay */}
         <div className="noise-overlay" />
         
-        {/* 3D background */}
+        {/* 3D Network Background — contains canvas + glow layers */}
         <ThreeBackground />
 
         {/* Global smooth scroll wrapper */}
