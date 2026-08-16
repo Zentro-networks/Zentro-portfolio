@@ -5,9 +5,9 @@ import { Project } from '../types';
 // Replace these placeholders with your actual client URLs when available.
 // ==========================================
 export const PROJECT_URLS = {
-  restaurant: '[RESTAURANT_PROJECT_URL]',
-  enterprise: '[ENTERPRISE_PROJECT_URL]',
-  ecommerce: '[ECOMMERCE_PROJECT_URL]',
+  restaurant: 'https://restaurantapp-psi-beryl.vercel.app/',
+  enterprise: 'https://building-web-zeta.vercel.app/',
+  ecommerce: 'https://e-commerce-teal-nine-73.vercel.app/',
 };
 
 export const projects: Project[] = [

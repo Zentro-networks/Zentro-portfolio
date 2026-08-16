@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useRef } from 'react';
-import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
-import { UtensilsCrossed, Building2, ShoppingBag, ArrowRight } from 'lucide-react';
+import { UtensilsCrossed, Building2, ShoppingBag, ArrowRight, ExternalLink } from 'lucide-react';
 import { projects } from '../../data/projects';
 
 // Map slugs to icons for visual preview placeholders
@@ -61,60 +60,91 @@ export default function OurWorks() {
                 transition={{ duration: 0.6, delay: idx * 0.15 }}
                 className="rounded-xl glass-panel flex flex-col justify-between glass-card-hover interactive-card border border-white/5 light:border-zinc-200 relative overflow-hidden group h-full min-w-0"
               >
-                <Link href={`/projects/${project.slug}`} className="flex flex-col h-full justify-between">
-                  <div>
-                    {/* Project Preview Area */}
-                    <div className={`h-48 w-full bg-gradient-to-br ${gradientClass} flex items-center justify-center relative border-b border-white/5 light:border-zinc-200 overflow-hidden`}>
-                      {/* Grid overlay for tech look */}
-                      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none" />
-                      
-                      {/* Floating glowing circle */}
-                      <div className="absolute w-24 h-24 rounded-full bg-primary/10 blur-xl group-hover:scale-150 transition-all duration-500" />
-                      
-                      <div className="p-4 rounded-full bg-zinc-950/80 light:bg-white/80 border border-white/10 light:border-zinc-200 text-accent light:text-primary z-10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xl">
-                        <IconComponent className="w-8 h-8" />
-                      </div>
+                {/* Determine if URL is a real link or a placeholder */}
+                {(() => {
+                  const isLive = project.liveUrl && !project.liveUrl.startsWith('[');
+                  const CardWrapper = isLive
+                    ? ({ children }: { children: React.ReactNode }) => (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex flex-col h-full justify-between"
+                        >
+                          {children}
+                        </a>
+                      )
+                    : ({ children }: { children: React.ReactNode }) => (
+                        <div className="flex flex-col h-full justify-between">{children}</div>
+                      );
 
-                      {/* Code wireframe mockup decoration */}
-                      <div className="absolute bottom-2 left-4 right-4 flex flex-col gap-1.5 opacity-40">
-                        <div className="h-1.5 w-1/3 rounded-full bg-white/20 light:bg-black/20" />
-                        <div className="h-1 w-2/3 rounded-full bg-white/10 light:bg-black/10" />
-                      </div>
-                    </div>
+                  return (
+                    <CardWrapper>
+                      <div>
+                        {/* Project Preview Area */}
+                        <div className={`h-48 w-full bg-gradient-to-br ${gradientClass} flex items-center justify-center relative border-b border-white/5 light:border-zinc-200 overflow-hidden`}>
+                          {/* Grid overlay for tech look */}
+                          <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none" />
+                          
+                          {/* Floating glowing circle */}
+                          <div className="absolute w-24 h-24 rounded-full bg-primary/10 blur-xl group-hover:scale-150 transition-all duration-500" />
+                          
+                          <div className="p-4 rounded-full bg-zinc-950/80 light:bg-white/80 border border-white/10 light:border-zinc-200 text-accent light:text-primary z-10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xl">
+                            <IconComponent className="w-8 h-8" />
+                          </div>
 
-                    {/* Card Content */}
-                    <div className="p-6">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-[9px] font-bold text-accent light:text-primary bg-accent/10 light:bg-primary/10 border border-accent/20 light:border-primary/20 px-2 py-0.5 rounded">
-                          {project.category}
-                        </span>
-                        <div className="flex gap-1">
-                          {project.tags.slice(0, 2).map((t) => (
-                            <span key={t} className="text-[8px] font-semibold text-muted bg-white/5 light:bg-black/5 px-1.5 py-0.5 rounded">
-                              {t}
+                          {/* Code wireframe mockup decoration */}
+                          <div className="absolute bottom-2 left-4 right-4 flex flex-col gap-1.5 opacity-40">
+                            <div className="h-1.5 w-1/3 rounded-full bg-white/20 light:bg-black/20" />
+                            <div className="h-1 w-2/3 rounded-full bg-white/10 light:bg-black/10" />
+                          </div>
+                        </div>
+
+                        {/* Card Content */}
+                        <div className="p-6">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-[9px] font-bold text-accent light:text-primary bg-accent/10 light:bg-primary/10 border border-accent/20 light:border-primary/20 px-2 py-0.5 rounded">
+                              {project.category}
                             </span>
-                          ))}
+                            <div className="flex gap-1">
+                              {project.tags.slice(0, 2).map((t) => (
+                                <span key={t} className="text-[8px] font-semibold text-muted bg-white/5 light:bg-black/5 px-1.5 py-0.5 rounded">
+                                  {t}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          <h3 className="font-display font-bold text-lg text-white light:text-zinc-950 mb-2 group-hover:text-accent light:group-hover:text-primary transition-colors">
+                            {project.title}
+                          </h3>
+                          
+                          <p className="text-xs text-muted leading-relaxed mb-4 line-clamp-3">
+                            {project.description}
+                          </p>
                         </div>
                       </div>
 
-                      <h3 className="font-display font-bold text-lg text-white light:text-zinc-950 mb-2 group-hover:text-accent light:group-hover:text-primary transition-colors">
-                        {project.title}
-                      </h3>
-                      
-                      <p className="text-xs text-muted leading-relaxed mb-4 line-clamp-3">
-                        {project.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* View Project Button */}
-                  <div className="p-4 sm:p-6 pt-0 mt-auto">
-                    <div className="w-full py-2.5 rounded-full border border-primary/20 bg-primary/5 group-hover:bg-primary text-white group-hover:border-transparent text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center min-h-[40px]">
-                      <span>View Project Case Study</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                    </div>
-                  </div>
-                </Link>
+                      {/* View Project Button */}
+                      <div className="p-4 sm:p-6 pt-0 mt-auto">
+                        <div className={`w-full py-2.5 rounded-full border text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-center min-h-[40px] ${
+                          isLive
+                            ? 'border-primary/20 bg-primary/5 group-hover:bg-primary text-white group-hover:border-transparent cursor-pointer'
+                            : 'border-white/5 bg-white/5 text-muted cursor-default'
+                        }`}>
+                          {isLive ? (
+                            <>
+                              <span>View Project</span>
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </>
+                          ) : (
+                            <span>Coming Soon</span>
+                          )}
+                        </div>
+                      </div>
+                    </CardWrapper>
+                  );
+                })()}
               </motion.div>
             );
           })}

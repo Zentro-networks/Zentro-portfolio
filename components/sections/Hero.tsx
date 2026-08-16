@@ -106,29 +106,6 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.7 }}
           className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
         >
-          <button
-            onClick={() => handleScrollTo('services')}
-            className="px-6 py-3.5 bg-white light:bg-zinc-900 text-[#071415] light:text-white rounded-full font-bold text-xs hover:bg-accent hover:text-[#071415] light:hover:bg-primary light:hover:text-white transition-all shadow-xl shadow-white/5 cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
-          >
-            <Code2 className="w-4 h-4" />
-            View Services
-          </button>
-          
-          <button
-            onClick={() => handleScrollTo('contact')}
-            className="px-6 py-3.5 bg-primary hover:bg-primary/90 text-white rounded-full font-bold text-xs shadow-lg hover:shadow-primary/20 transition-all cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
-          >
-            <Send className="w-4 h-4" />
-            Hire Me
-          </button>
-
-          <a
-            href="/resume.pdf"
-            download
-            className="px-6 py-3.5 border border-white/10 light:border-zinc-300 bg-zinc-950/40 hover:bg-zinc-900 light:hover:bg-zinc-100 text-white light:text-zinc-950 rounded-full font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[44px]"
-          >
-            Resume
-          </a>
         </motion.div>
       </div>
 

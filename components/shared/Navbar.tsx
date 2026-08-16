@@ -3,10 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Sun, Moon, Menu, X, FileText } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const NAV_ITEMS = [
- /* { label: 'About', id: 'about' },*/
   { label: 'Services', id: 'services' },
   { label: 'Projects', id: 'projects' },
   { label: 'Reviews', id: 'testimonials' },
@@ -15,35 +14,10 @@ const NAV_ITEMS = [
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState('');
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-
-  // Load and apply theme
-  useEffect(() => {
-    const storedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
-    if (storedTheme === 'light') {
-      setTheme('light');
-      document.documentElement.classList.add('light');
-    } else {
-      setTheme('dark');
-      document.documentElement.classList.remove('light');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-    if (nextTheme === 'light') {
-      document.documentElement.classList.add('light');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.documentElement.classList.remove('light');
-      localStorage.setItem('theme', 'dark');
-    }
-  };
 
   // Scroll spy & scrolled state
   useEffect(() => {
@@ -134,36 +108,14 @@ export default function Navbar() {
           </div>
         </nav>
 
-        {/* Theme, Resume & Burger */}
-        <div className="flex items-center gap-3">
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full border border-white/5 light:border-black/5 bg-zinc-900/40 light:bg-zinc-100/50 text-muted hover:text-white light:hover:text-zinc-950 hover:bg-zinc-800 light:hover:bg-zinc-200 transition-all pointer-events-auto"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </button>
-
-          {/* Resume Trigger */}
-          <a
-            href="/resume.pdf"
-            download
-            className="hidden md:flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-full text-xs font-semibold shadow-lg hover:shadow-primary/20 transition-all cursor-pointer pointer-events-auto"
-          >
-            <FileText className="w-3.5 h-3.5" />
-            Resume
-          </a>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-2 rounded-full border border-white/5 light:border-black/5 bg-zinc-900/40 light:bg-zinc-100/50 text-muted hover:text-white light:hover:text-zinc-950 lg:hidden pointer-events-auto"
-            aria-label="Toggle Navigation menu"
-          >
-            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
+        {/* Mobile Menu Toggle */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="p-2 rounded-full border border-white/5 light:border-black/5 bg-zinc-900/40 light:bg-zinc-100/50 text-muted hover:text-white light:hover:text-zinc-950 lg:hidden pointer-events-auto"
+          aria-label="Toggle Navigation menu"
+        >
+          {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
       </div>
 
       {/* Mobile Drawer */}
@@ -187,14 +139,6 @@ export default function Navbar() {
               );
             })}
           </nav>
-          <a
-            href="/resume.pdf"
-            download
-            className="flex items-center justify-center gap-2 py-3 bg-primary hover:bg-primary/95 text-white rounded-lg text-sm font-semibold cursor-pointer"
-          >
-            <FileText className="w-4 h-4" />
-            Download Resume
-          </a>
         </div>
       )}
     </header>

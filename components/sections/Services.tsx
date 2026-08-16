@@ -49,10 +49,10 @@ export default function Services() {
           <div className="h-1 bg-gradient-to-r from-primary to-accent mx-auto mt-4 rounded-full w-20" />
         </div>
 
-        {/* Services Grid */}
+        {/* Services Grid — single card, centred */}
         <div
           ref={containerRef}
-          className="max-w-2xl mx-auto"
+          className="max-w-lg mx-auto"
         >
           {services.map((service, idx) => {
             const IconComponent = ICON_MAP[service.iconName] || Layout;
