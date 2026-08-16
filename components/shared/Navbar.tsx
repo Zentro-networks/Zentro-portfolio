@@ -74,20 +74,20 @@ export default function Navbar() {
         : 'py-4 md:py-6 bg-transparent'
         }`}
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
-        {/* Logo */}
+      {/* 3-column layout: logo left | nav centre | burger right */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-3 items-center">
+        {/* Logo — left */}
         <Link
           href="/"
-          className="font-display font-bold text-base md:text-xl text-white light:text-zinc-950 flex items-center gap-1.5 shrink-0"
+          className="font-display font-bold text-base md:text-xl text-white light:text-zinc-950 flex items-center gap-1.5 shrink-0 justify-self-start"
         >
           <span className="w-2.5 h-2.5 rounded-full bg-accent animate-ping absolute" />
           <span className="w-2.5 h-2.5 rounded-full bg-accent relative" />
           <span className="hidden xs:inline sm:inline">ZENTRONETWORKS</span>
-          
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-1.5">
+        {/* Desktop Navigation — centre column */}
+        <nav className="hidden lg:flex items-center justify-center">
           <div className="flex bg-zinc-900/50 light:bg-zinc-100/80 p-1.5 rounded-full border border-white/5 light:border-black/5">
             {NAV_ITEMS.map((item) => {
               const isActive = activeSection === item.id;
@@ -108,14 +108,16 @@ export default function Navbar() {
           </div>
         </nav>
 
-        {/* Mobile Menu Toggle */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="p-2 rounded-full border border-white/5 light:border-black/5 bg-zinc-900/40 light:bg-zinc-100/50 text-muted hover:text-white light:hover:text-zinc-950 lg:hidden pointer-events-auto"
-          aria-label="Toggle Navigation menu"
-        >
-          {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Right side — burger (mobile only) */}
+        <div className="flex items-center justify-end">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 rounded-full border border-white/5 light:border-black/5 bg-zinc-900/40 light:bg-zinc-100/50 text-muted hover:text-white light:hover:text-zinc-950 lg:hidden pointer-events-auto"
+            aria-label="Toggle Navigation menu"
+          >
+            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer */}

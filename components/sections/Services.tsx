@@ -52,7 +52,7 @@ export default function Services() {
         {/* Services Grid — single card, centred */}
         <div
           ref={containerRef}
-          className="max-w-lg mx-auto"
+          className="max-w-xs mx-auto"
         >
           {services.map((service, idx) => {
             const IconComponent = ICON_MAP[service.iconName] || Layout;
