@@ -67,6 +67,22 @@ export default function Navbar() {
     }
   };
 
+  // Logo / company name — navigate to home, reset all transient UI state
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsOpen(false);       // close mobile menu
+    setActiveSection('');   // clear active section indicator
+    if (pathname === '/') {
+      // Already on home — just scroll to top smoothly
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Navigate to home, then scroll to top after mount
+      router.push('/');
+      // scrollTo after a tick so the page has navigated
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'instant' }), 0);
+    }
+  };
+
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 overflow-x-hidden ${scrolled
@@ -76,10 +92,11 @@ export default function Navbar() {
     >
       {/* 3-column layout: logo left | nav centre | burger right */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-3 items-center">
-        {/* Logo — left */}
+        {/* Logo — left: clicking returns to top of Home, closes menu, resets UI state */}
         <Link
           href="/"
-          className="font-display font-bold text-base md:text-xl text-white light:text-zinc-950 flex items-center gap-1.5 shrink-0 justify-self-start"
+          onClick={handleLogoClick}
+          className="font-display font-bold text-base md:text-xl text-white light:text-zinc-950 flex items-center gap-1.5 shrink-0 justify-self-start cursor-pointer hover:opacity-80 transition-opacity duration-200"
         >
           <span className="w-2.5 h-2.5 rounded-full bg-accent animate-ping absolute" />
           <span className="w-2.5 h-2.5 rounded-full bg-accent relative" />
