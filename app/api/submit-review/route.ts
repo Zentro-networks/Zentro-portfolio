@@ -63,20 +63,27 @@ export async function POST(request: Request) {
     //    To add a database later, insert a row here before the email step and
     //    return early if the insert fails. The email step can stay as a
     //    notification or be removed entirely — the UI does not need to change.
+    //
+    //    Resend free plan note: the sandbox "from" (onboarding@resend.dev) can
+    //    only deliver to the email address you verified in your Resend account.
+    //    Set RESEND_TO_EMAIL in .env.local to your verified Resend address.
+    //    Once you have a verified sending domain, set RESEND_TO_EMAIL=zentronetworks@gmail.com.
     // ---------------------------------------------------------------------------
 
-    const companyEmail = process.env.COMPANY_EMAIL ?? 'zentronetworks@gmail.com';
-    const resendApiKey = process.env.RESEND_API_KEY;
+    const companyEmail   = process.env.COMPANY_EMAIL ?? 'zentronetworks@gmail.com';
+    // RESEND_TO_EMAIL overrides the delivery recipient for Resend sandbox compatibility.
+    const recipientEmail = process.env.RESEND_TO_EMAIL ?? companyEmail;
+    const resendApiKey   = process.env.RESEND_API_KEY;
 
     if (resendApiKey) {
       const resend = new Resend(resendApiKey);
 
       const emailResult = await resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev',
-        to: companyEmail,
+        to: recipientEmail,
         subject: `New Client Review (Pending Approval) — ${safeClientName}`,
         html: `
-          <h2 style="color:#071415;font-family:sans-serif;">New Review Submission — <em>Status: PENDING</em></h2>
+          <h2 style="color:#071415;font-family:sans-serif;">New Review Submission &mdash; <em>Status: PENDING</em></h2>
           <p style="font-family:sans-serif;color:#333;">
             A client has submitted a review. Please review and publish if approved.
           </p>
@@ -87,7 +94,7 @@ export async function POST(request: Request) {
             </tr>
             <tr>
               <td style="padding:8px 12px;background:#f4f4f4;font-weight:bold;">Company</td>
-              <td style="padding:8px 12px;border-bottom:1px solid #eee;">${safeCompanyName || '—'}</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #eee;">${safeCompanyName || '&mdash;'}</td>
             </tr>
             <tr>
               <td style="padding:8px 12px;background:#f4f4f4;font-weight:bold;">Project / Service</td>
@@ -95,25 +102,31 @@ export async function POST(request: Request) {
             </tr>
             <tr>
               <td style="padding:8px 12px;background:#f4f4f4;font-weight:bold;">Rating</td>
-              <td style="padding:8px 12px;border-bottom:1px solid #eee;">${'★'.repeat(rating)}${'☆'.repeat(5 - rating)} (${rating}/5)</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #eee;">${'&#9733;'.repeat(rating)}${'&#9734;'.repeat(5 - rating)} (${rating}/5)</td>
             </tr>
             <tr>
               <td style="padding:8px 12px;background:#f4f4f4;font-weight:bold;vertical-align:top;">Feedback</td>
               <td style="padding:8px 12px;white-space:pre-wrap;">${safeFeedback}</td>
             </tr>
+            <tr>
+              <td style="padding:8px 12px;background:#f4f4f4;font-weight:bold;">Company Email</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #eee;color:#888;">${companyEmail}</td>
+            </tr>
           </table>
           <p style="font-family:sans-serif;color:#888;font-size:12px;margin-top:24px;">
-            Submitted at ${new Date().toISOString()} — do NOT publish without review.
+            Submitted at ${new Date().toISOString()} &mdash; do NOT publish without review.
           </p>
         `,
       });
 
       if (emailResult.error) {
+        // Surface the actual Resend error in server logs for debugging
+        console.error('[submit-review] Resend error:', JSON.stringify(emailResult.error));
         throw new Error(emailResult.error.message);
       }
     } else {
       // Dev fallback when RESEND_API_KEY is not set — log to server only (never client)
-      console.info('[submit-review] No RESEND_API_KEY set. Review would be emailed to:', companyEmail);
+      console.info('[submit-review] No RESEND_API_KEY set. Review would be emailed to:', recipientEmail);
       console.info('[submit-review] Review data:', { safeClientName, safeCompanyName, safeProjectName, rating, safeFeedback });
     }
 

@@ -57,8 +57,10 @@ export async function POST(request: Request) {
     const safeMessage     = sanitize(message);
 
     // 4. Company email — single source of truth via env var
-    const companyEmail = process.env.COMPANY_EMAIL ?? 'zentronetworks@gmail.com';
-    const resendApiKey = process.env.RESEND_API_KEY;
+    const companyEmail   = process.env.COMPANY_EMAIL ?? 'zentronetworks@gmail.com';
+    // RESEND_TO_EMAIL overrides the delivery recipient for Resend sandbox compatibility.
+    const recipientEmail = process.env.RESEND_TO_EMAIL ?? companyEmail;
+    const resendApiKey   = process.env.RESEND_API_KEY;
 
     if (!resendApiKey) {
       // In production without a key the form should surface an error,
@@ -74,7 +76,7 @@ export async function POST(request: Request) {
 
     const emailResult = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev',
-      to: companyEmail,
+      to: recipientEmail,
       subject: `New Project Inquiry – ${safeName}`,
       html: `
         <h2 style="color:#071415;font-family:sans-serif;">New Project Inquiry</h2>
