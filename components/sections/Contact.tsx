@@ -137,10 +137,12 @@ export default function Contact() {
 
             {/* Direct Coordinates */}
             <div className="space-y-4 text-xs font-semibold">
-              {/* Email — opens default mail client */}
+              {/* Email — opens Gmail compose in a new tab */}
               <a
-                href="mailto:zentronetworks@gmail.com"
-                title="Click to send email"
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent('zentronetworks@gmail.com')}&su=${encodeURIComponent('Website Enquiry')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Click to email us via Gmail"
                 className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 hover:border-accent/30 transition-all text-muted hover:text-white light:hover:text-zinc-950"
               >
                 <Mail className="w-5 h-5 text-accent shrink-0" />

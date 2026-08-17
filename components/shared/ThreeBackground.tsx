@@ -254,7 +254,7 @@ export default function ThreeBackground() {
         className="absolute inset-0 w-full h-full"
         camera={{ position: [0, 0, 5], fov: 55 }}
         gl={{ antialias: false, powerPreference: 'high-performance', alpha: true }}
-        style={{ background: 'transparent' }}
+        style={{ background: 'transparent', pointerEvents: 'none' }}
       >
         <color attach="background" args={[bgColor]} />
         <NetworkGraph
