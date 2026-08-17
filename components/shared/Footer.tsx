@@ -6,21 +6,15 @@ import { Whatsapp } from './Icons';
 
 const FOOTER_LINKS = {
   company: [
-    { label: 'About Us', href: '#about' },
     { label: 'Our Process', href: '#services' },
     { label: 'Reviews', href: '#testimonials' },
   ],
   services: [
-    { label: 'Custom Web Application', href: '#services' },
-    { label: 'UI/UX Design', href: '#services' },
-    { label: 'E-Commerce Solutions', href: '#projects' },
-    { label: 'Enterprise Systems', href: '#projects' },
+    { label: 'Custom Web Application', href: '#services' }
   ],
   resources: [
-    { label: 'Case Studies', href: '#projects' },
     { label: 'Our Works', href: '#projects' },
-    { label: 'Contact Us', href: '#contact' },
-    { label: 'Get a Quote', href: '#contact' },
+    { label: 'Contact Us', href: '#contact' }
   ],
 };
 
