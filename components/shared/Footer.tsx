@@ -1,9 +1,8 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { Mail, Phone, ArrowUp } from 'lucide-react';
-import { Whatsapp, Linkedin, Twitter } from './Icons';
+import { Whatsapp } from './Icons';
 
 const FOOTER_LINKS = {
   company: [
@@ -137,10 +136,10 @@ export default function Footer() {
             Connect
           </h3>
 
-          {/* Social Icons */}
+          {/* Social Icons — WhatsApp & Email only */}
           <div className="flex items-center gap-2.5 mb-6">
             <a
-              href="https://wa.me/15550199"
+              href="https://wa.me/919384967955"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
@@ -149,25 +148,7 @@ export default function Footer() {
               <Whatsapp className="w-4 h-4" />
             </a>
             <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="w-9 h-9 rounded-full border border-white/10 light:border-white/20 flex items-center justify-center text-white/50 hover:text-accent hover:border-accent/40 transition-all duration-200"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter / X"
-              className="w-9 h-9 rounded-full border border-white/10 light:border-white/20 flex items-center justify-center text-white/50 hover:text-accent hover:border-accent/40 transition-all duration-200"
-            >
-              <Twitter className="w-4 h-4" />
-            </a>
-            <a
-              href="mailto:hello@zentronetworks.com"
+              href="mailto:zentronetworks@gmail.com"
               aria-label="Email"
               className="w-9 h-9 rounded-full border border-white/10 light:border-white/20 flex items-center justify-center text-white/50 hover:text-accent hover:border-accent/40 transition-all duration-200"
             >
@@ -178,18 +159,18 @@ export default function Footer() {
           {/* Contact Details */}
           <div className="space-y-2">
             <a
-              href="mailto:hello@zentronetworks.com"
+              href="mailto:zentronetworks@gmail.com"
               className="flex items-center gap-2 text-sm text-white/55 hover:text-white transition-colors duration-200 group"
             >
               <Mail className="w-3.5 h-3.5 text-accent/70 group-hover:text-accent shrink-0" />
-              hello@zentronetworks.com
+              zentronetworks@gmail.com
             </a>
             <a
-              href="tel:+919876543210"
+              href="tel:+919384967955"
               className="flex items-center gap-2 text-sm text-white/55 hover:text-white transition-colors duration-200 group"
             >
               <Phone className="w-3.5 h-3.5 text-accent/70 group-hover:text-accent shrink-0" />
-              +91 98765 43210
+              +91 93849 67955
             </a>
           </div>
         </div>
