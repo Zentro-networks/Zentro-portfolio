@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -20,6 +20,32 @@ type ContactFormValues = z.infer<typeof contactSchema>;
 export default function Contact() {
   const [formState, setFormState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [statusMessage, setStatusMessage] = useState('');
+  const [phoneCopied, setPhoneCopied] = useState(false);
+
+  const COMPANY_PHONE = '+91 9384967955';
+
+  const handleCopyPhone = useCallback(async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(COMPANY_PHONE);
+      } else {
+        // Fallback for browsers without Clipboard API
+        const el = document.createElement('textarea');
+        el.value = COMPANY_PHONE;
+        el.style.position = 'fixed';
+        el.style.opacity = '0';
+        document.body.appendChild(el);
+        el.focus();
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+      }
+      setPhoneCopied(true);
+      setTimeout(() => setPhoneCopied(false), 2000);
+    } catch {
+      // Silently ignore if clipboard is unavailable
+    }
+  }, []);
 
   const {
     register,
@@ -111,21 +137,32 @@ export default function Contact() {
 
             {/* Direct Coordinates */}
             <div className="space-y-4 text-xs font-semibold">
+              {/* Email — opens default mail client */}
               <a
-                href="https://mail.google.com/mail/u/7/#inbox"
+                href="mailto:zentronetworks@gmail.com"
+                title="Click to send email"
                 className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 hover:border-accent/30 transition-all text-muted hover:text-white light:hover:text-zinc-950"
               >
                 <Mail className="w-5 h-5 text-accent shrink-0" />
                 <span>zentronetworks@gmail.com</span>
               </a>
 
-              <a
-                href="tel:+91 7305893249"
-                className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 hover:border-accent/30 transition-all text-muted hover:text-white light:hover:text-zinc-950"
+              {/* Phone — copies number to clipboard (no navigation) */}
+              <button
+                type="button"
+                onClick={handleCopyPhone}
+                title="Click to copy phone number"
+                className="relative w-full flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 hover:border-accent/30 transition-all text-muted hover:text-white light:hover:text-zinc-950 cursor-pointer focus:outline-none focus:border-accent/50 focus-visible:ring-2 focus-visible:ring-accent/40 text-left"
               >
                 <Phone className="w-5 h-5 text-primary shrink-0" />
-                <span>+91 9384967955</span>
-              </a>
+                <span>{COMPANY_PHONE}</span>
+                {/* Copied confirmation tooltip */}
+                {phoneCopied && (
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-accent bg-accent/10 border border-accent/20 px-2 py-0.5 rounded-full animate-pulse">
+                    Copied!
+                  </span>
+                )}
+              </button>
 
               <div className="flex items-center gap-4 p-4 rounded-lg bg-zinc-900/40 light:bg-zinc-100 border border-white/5 light:border-zinc-200 text-muted">
                 <MapPin className="w-5 h-5 text-accent shrink-0" />

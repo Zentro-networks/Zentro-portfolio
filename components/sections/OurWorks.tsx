@@ -2,17 +2,17 @@
 
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { UtensilsCrossed, Building2, ShoppingBag, ArrowRight, ExternalLink } from 'lucide-react';
+import { UtensilsCrossed, Building2, ShoppingBag, ExternalLink } from 'lucide-react';
 import { projects } from '../../data/projects';
 
-// Map slugs to icons for visual preview placeholders
+// Fallback icons for projects without images
 const PREVIEW_ICONS: Record<string, React.ComponentType<any>> = {
   'restaurant-web-page': UtensilsCrossed,
   'enterprise': Building2,
   'ecommerce': ShoppingBag,
 };
 
-// Map slugs to gradient patterns for beautiful previews
+// Fallback gradient patterns for projects without images
 const PREVIEW_GRADIENTS: Record<string, string> = {
   'restaurant-web-page': 'from-[#087F7B]/20 via-[#0B2929]/50 to-[#071415]',
   'enterprise': 'from-blue-600/10 via-[#0B2929]/50 to-[#071415]',
@@ -51,6 +51,8 @@ export default function OurWorks() {
           {projects.map((project, idx) => {
             const IconComponent = PREVIEW_ICONS[project.slug] || Building2;
             const gradientClass = PREVIEW_GRADIENTS[project.slug] || 'from-primary/10 via-[#0B2929]/50 to-[#071415]';
+            // Use first image from project data; swap this path to update the image
+            const projectImage = project.images?.[0] ?? null;
 
             return (
               <motion.div
@@ -81,23 +83,33 @@ export default function OurWorks() {
                   return (
                     <CardWrapper>
                       <div>
-                        {/* Project Preview Area */}
-                        <div className={`h-48 w-full bg-gradient-to-br ${gradientClass} flex items-center justify-center relative border-b border-white/5 light:border-zinc-200 overflow-hidden`}>
-                          {/* Grid overlay for tech look */}
-                          <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none" />
-                          
-                          {/* Floating glowing circle */}
-                          <div className="absolute w-24 h-24 rounded-full bg-primary/10 blur-xl group-hover:scale-150 transition-all duration-500" />
-                          
-                          <div className="p-4 rounded-full bg-zinc-950/80 light:bg-white/80 border border-white/10 light:border-zinc-200 text-accent light:text-primary z-10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xl">
-                            <IconComponent className="w-8 h-8" />
-                          </div>
-
-                          {/* Code wireframe mockup decoration */}
-                          <div className="absolute bottom-2 left-4 right-4 flex flex-col gap-1.5 opacity-40">
-                            <div className="h-1.5 w-1/3 rounded-full bg-white/20 light:bg-black/20" />
-                            <div className="h-1 w-2/3 rounded-full bg-white/10 light:bg-black/10" />
-                          </div>
+                        {/* Project Image Area — consistent h-48 across all cards */}
+                        <div className="relative h-48 w-full overflow-hidden border-b border-white/5 light:border-zinc-200">
+                          {projectImage ? (
+                            <>
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={projectImage}
+                                alt={`${project.title} project preview`}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              />
+                              {/* Subtle teal glow overlay on hover */}
+                              <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300 pointer-events-none" />
+                            </>
+                          ) : (
+                            /* Gradient icon placeholder when no image is set */
+                            <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} flex items-center justify-center`}>
+                              <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none" />
+                              <div className="absolute w-24 h-24 rounded-full bg-primary/10 blur-xl group-hover:scale-150 transition-all duration-500" />
+                              <div className="p-4 rounded-full bg-zinc-950/80 light:bg-white/80 border border-white/10 light:border-zinc-200 text-accent light:text-primary z-10 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-xl">
+                                <IconComponent className="w-8 h-8" />
+                              </div>
+                              <div className="absolute bottom-2 left-4 right-4 flex flex-col gap-1.5 opacity-40">
+                                <div className="h-1.5 w-1/3 rounded-full bg-white/20 light:bg-black/20" />
+                                <div className="h-1 w-2/3 rounded-full bg-white/10 light:bg-black/10" />
+                              </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* Card Content */}
