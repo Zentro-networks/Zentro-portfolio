@@ -15,13 +15,10 @@ export default function CommandPalette() {
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Handle shortcuts: Ctrl + J toggles palette, Ctrl + K scrolls through sections
+  // Handle shortcuts: Ctrl + K scrolls through sections
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'j') {
-        e.preventDefault();
-        setIsOpen((prev) => !prev);
-      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         if (e.repeat) return;
 
@@ -181,17 +178,6 @@ export default function CommandPalette() {
 
   return (
     <>
-      {/* Floating J Icon Indicator in corner (optional helper) */}
-      <div className="fixed bottom-4 right-4 z-40 hidden md:block">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-lg glass-panel text-xs text-muted hover:text-white transition-all pointer-events-auto"
-        >
-          <span>Press</span>
-          <kbd className="px-1.5 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-[10px]">Ctrl + J</kbd>
-        </button>
-      </div>
-
       <AnimatePresence>
         {isOpen && (
           <div className="fixed inset-0 z-[9999] flex items-start justify-center pt-[15vh]">
